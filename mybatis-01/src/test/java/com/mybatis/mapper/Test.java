@@ -88,4 +88,25 @@ public class Test {
         sqlSession.commit();
         sqlSession.close();
     }
+
+
+    /*
+    * 分页
+    * */
+    @org.junit.Test
+    public void queryLimit(){
+        SqlSession sqlSession = MybatisUtil.getSqlSession();
+
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+
+        List<User> users = mapper.queryLimit(1, 2);
+
+        for (User user : users) {
+            System.out.println(user);
+        }
+
+
+        sqlSession.close();
+    }
+
 }

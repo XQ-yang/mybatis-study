@@ -1,6 +1,7 @@
 package com.mybatis.mapper;
 
 import com.mybatis.model.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface UserMapper {
     int insertUser(User user);
 
     int deleteUser(int id);
+
+    List<User> queryLimit(@Param("offset") int offset, @Param("limit") int limit);
 }

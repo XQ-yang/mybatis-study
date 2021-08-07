@@ -27,4 +27,10 @@
     <delete id="deleteUser" parameterType="int">
         delete from user where id = #{id}
     </delete>
+    
+    <!--分页查询-->
+    <select id="queryLimit" parameterType="int" resultType="com.mybatis.model.User">
+        select * from user limit #{offset},#{limit}
+    </select>
+    
 </mapper>
