@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.TeacherMapper">
+
+    <select id="getTeacher" resultMap="teacherMap" parameterType="int">
+        select t.id tid,t.name tname,s.id sid,s.name sname from student s,teacher t
+        where s.tid = t.id and t.id = #{tid}
+    </select>
+
+
+    <resultMap id="teacherMap" type="com.mybatis.model.Teacher">
+        <result column="tid" property="id"></result>
+        <result column="tname" property="name"></result>
+        <collection property="students" ofType="com.mybatis.model.Student">
+            <result property="id" column="sid"></result>
+            <result property="name" column="sname"></result>
+        </collection>
+    </resultMap>
+
+
+</mapper>

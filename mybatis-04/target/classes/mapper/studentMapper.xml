@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.StudentMapper">
+
+    <resultMap id="getStudentMap" type="student">
+        <id column="id" property="id"></id>
+        <id column="name" property="name"></id>
+        <collection property="courses" ofType="course">
+            <result column="cid" property="cid"></result>
+            <result column="cname" property="cname"></result>
+        </collection>
+    </resultMap>
+
+    <select id="getStudentById" resultMap="getStudentMap">
+        select s.id,s.name,c.cid,c.cname from courses c,student s,sc
+        where s.id=sc.sid and sc.cid = c.cid and s.id = #{id}
+    </select>
+
+
+
+    <select id="getStudent" parameterType="int" resultType="student">
+        select * from student where id = #{id}
+    </select>
+
+
+</mapper>
