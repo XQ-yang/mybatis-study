@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.dao.StudentDao">
+
+    <select id="queryAll" resultType="com.mybatis.pojo.Student">
+        select * from tb_student
+    </select>
+
+    <select id="findStudentById" parameterType="Integer" resultMap="StudentIdCardWithStudentResult">
+        select * from tb_student
+        where id = #{id}
+    </select>
+
+    <select id="findStudentById2" parameterType="Integer" resultMap="StudentIdCardWithStudentResult">
+        select * from tb_student s,tb_studentidcard sd
+        where s.card_id = sd.id and s.id = #{id}
+    </select>
+
+    <!--嵌套查询-->
+    <resultMap id="StudentIdCardWithStudentResult" type="Student">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="sex" column="sex"/>
+        <association property="studentIdCard" column="card_id" javaType="StudentIdCard" select="com.mybatis.dao.StudentIdCardDao.findStudentIdCardById"/>
+    </resultMap>
+
+    <!--嵌套结果-->
+    <resultMap id="StudentIdCardWithStudentResult2" type="Student">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="sex" column="sex"/>
+        <association property="studentIdCard" javaType="StudentIdCard">
+            <id property="id" column="card_id"/>
+            <result property="code" column="CODE"/>
+        </association>
+    </resultMap>
+
+    <select id="findStudentById3" parameterType="Integer" resultType="Student2">
+        select * from tb_student2
+        where id in
+        (select student_id from tb_sc where course_id = #{id})
+    </select>
+
+    <select id="findStudentWithCourseById" parameterType="Integer" resultMap="StudentWithCourseResult">
+        select s.*,c.id cid,c.name cname,c.code from tb_student2 s,tb_course c,tb_sc sc
+        where s.id = sc.student_id and c.id = sc.course_id and s.id = #{id}
+    </select>
+
+    <resultMap id="StudentWithCourseResult" type="Student2">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="sex" column="sex"/>
+        <collection property="courseList" ofType="Course">
+            <id property="id" column="cid"/>
+            <result property="name" column="cname"/>
+            <result property="code" column="code"/>
+        </collection>
+    </resultMap>
+
+</mapper>

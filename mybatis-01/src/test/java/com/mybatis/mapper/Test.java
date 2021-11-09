@@ -22,8 +22,9 @@ public class Test {
     public void queryAll(){
         SqlSession sqlSession = MybatisUtil.getSqlSession();
 
-        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-        List<User> userList = userMapper.queryAll();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+
+        List<User> userList = mapper.queryAll();
 
         for (User user : userList) {
             System.out.println(user);

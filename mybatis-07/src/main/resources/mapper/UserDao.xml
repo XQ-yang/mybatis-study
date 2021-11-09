@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.dao.UserDao">
+
+    <resultMap type="com.mybatis.pojo.User" id="UserMap">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <collection property="roleList" javaType="ArrayList" column="id" ofType="com.mybatis.pojo.Role" fetchType="lazy" select="com.mybatis.dao.RoleDao.findByUserId">
+            <id column="id" property="id"/>
+            <result property="name" column="name"/>
+        </collection>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="findById" resultMap="UserMap">
+        select *
+        from mybatis.user
+        where id = #{id}
+    </select>
+
+    <select id="findByRoleId" parameterType="Integer" resultType="com.mybatis.pojo.User">
+        select *
+        from mybatis.user
+        where id in (
+            select user_id from user_role_rel where role_id = #{roleId}
+            )
+    </select>
+
+
+
+</mapper>
+

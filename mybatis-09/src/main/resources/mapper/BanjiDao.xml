@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.dao.BanjiDao">
+    <select id="findBanjiWithStudent" parameterType="Integer" resultMap="BanjiWithStudentResult">
+        select b.*,s2.id sid,s2.name sname,s2.sex from tb_banji b,tb_student2 s2
+        where b.id = s2.banji_id
+    </select>
+
+    <resultMap id="BanjiWithStudentResult" type="Banji">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <collection property="student2List" ofType="Student2">
+            <id property="id" column="sid"/>
+            <result property="name" column="sname"/>
+            <result property="sex" column="sex"/>
+        </collection>
+    </resultMap>
+
+</mapper>
